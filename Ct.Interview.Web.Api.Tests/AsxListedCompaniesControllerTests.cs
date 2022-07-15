@@ -19,16 +19,6 @@ namespace Ct.Interview.Web.Api.Tests
             _controller = new AsxListedCompaniesController(_mockService);
         }
 
-        //[TestMethod]
-        //public void Get_WhenCalled_ReturnsOkObjectResult()
-        //{
-        //    _mockService.AsxListedCompanies = GetSampleCompanies();
-
-        //    dynamic result = _controller.Get("MOQ").Result;
-
-        //    Assert.IsNotNull(result.Value);
-        //}
-
         [TestMethod]
         public void Get_WhenCalled_ReturnsOkObjectResult()
         {
