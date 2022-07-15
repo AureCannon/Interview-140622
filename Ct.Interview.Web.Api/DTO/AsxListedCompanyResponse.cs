@@ -1,4 +1,4 @@
-﻿namespace Ct.Interview.Web.Api
+﻿namespace Ct.Interview.Web.Api.DTO
 {
     public class AsxListedCompanyResponse
     {

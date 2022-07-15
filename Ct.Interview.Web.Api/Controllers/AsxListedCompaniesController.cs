@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Ct.Interview.Web.Api.DTO;
+using Ct.Interview.Web.Api.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Ct.Interview.Web.Api.Controllers
 {
@@ -13,12 +15,45 @@ namespace Ct.Interview.Web.Api.Controllers
             _asxListedCompaniesService = asxListedCompaniesService;
         }
 
+        /// <summary>
+        /// GET: api/AsxListedCompanies?asxCode=<value>
+        /// </summary>
+        /// <param name="asxCode"></param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<AsxListedCompanyResponse[]>> Get(string asxCode)
+        public async Task<IActionResult> Get(string asxCode)
         {
-            var asxListedCompanies = await _asxListedCompaniesService.GetByAsxCode(asxCode);
+            try
+            {
+                var asxListedCompanies = await _asxListedCompaniesService.GetByAsxCode(asxCode);
 
-            return Ok(asxListedCompanies);
+                if (asxListedCompanies.Count() > 0)
+                    return Ok(asxListedCompanies);
+                else
+                    return NotFound();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+
+        /// <summary>
+        /// PATCH: api/AsxListedCompanies?asxCode=<value>
+        /// </summary>
+        /// <returns></returns>
+        [HttpPatch]
+        public async Task<IActionResult> UpdateList()
+        {
+            try
+            {
+                await _asxListedCompaniesService.UpdateListfromCSV();
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
     }
 }
