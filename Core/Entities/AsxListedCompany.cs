@@ -1,6 +1,6 @@
-﻿namespace Ct.Interview.Web.Api
+﻿namespace Core.Entities
 {
-    public class AsxListedCompany
+    public class AsxListedCompany : Entity
     {
         public string CompanyName { get; set; }
         public string AsxCode { get; set; }

@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using Core.Entities;
+using System.Threading.Tasks;
 
-namespace Ct.Interview.Web.Api
+namespace Core.Service
 {
     public interface IAsxListedCompaniesService
     {
