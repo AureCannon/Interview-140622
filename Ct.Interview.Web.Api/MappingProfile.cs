@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entities;
+using Ct.Interview.Web.Api.Models;
 
 namespace Ct.Interview.Web.Api
 {
@@ -7,7 +8,7 @@ namespace Ct.Interview.Web.Api
     {
         public MappingProfile()
         {
-            CreateMap<AsxListedCompany, AsxListedCompany>().ReverseMap();
+            CreateMap<AsxListedCompany, AsxListedCompanyResponse>().ReverseMap();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Core;
+using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Retry;
 using System.Linq;
@@ -10,10 +11,11 @@ namespace Infrastructure.Client
     {
         private readonly HttpClient _httpClient;
         private AsyncRetryPolicy _retryPolicy;
-
-        public AsxCompanyClient(HttpClient httpClient, AsxSettings settings)
+        private readonly ILogger<AsxCompanyClient> _logger;
+        public AsxCompanyClient(ILogger<AsxCompanyClient> logger, HttpClient httpClient, AsxSettings settings)
         {
             _httpClient = httpClient;
+            _logger = logger;
             _httpClient.BaseAddress = new Uri(settings.ListedSecuritiesCsvUrl);
             var maxRetries = 3;
             HttpStatusCode?[] httpStatusCodesWorthRetrying =
@@ -27,11 +29,10 @@ namespace Infrastructure.Client
             var l = httpStatusCodesWorthRetrying.Contains(HttpStatusCode.NoContent);
             _retryPolicy = Policy
                 .Handle<HttpRequestException>(ex => httpStatusCodesWorthRetrying.Contains(ex.StatusCode))
-                .WaitAndRetryAsync(maxRetries, retryAttempt =>
+                .WaitAndRetryAsync(maxRetries, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                (ex, timespan, retryCount) =>
                 {
-                    var timeToWait = TimeSpan.FromSeconds(Math.Pow(2, retryAttempt));
-                    ///TODO: logger here
-                    return timeToWait;
+                    _logger.LogError($"Error: {ex.Message}, retry count {retryCount}");
                 });
         }
 

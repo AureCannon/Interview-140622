@@ -31,7 +31,8 @@ namespace Infrastructure.Repository
 
         public async Task<IEnumerable<T>> FindEntitiesByConditionAsync(Expression<Func<T, bool>> predicate)
         {
-            return await _context.Set<T>().Where(predicate).AsNoTracking().ToListAsync();
+            var result = await _context.Set<T>().Where(predicate).AsNoTracking().ToListAsync();
+            return result;
         }
 
         public async Task<T> FindEntityByConditionAsync(Expression<Func<T, bool>> predicate)
