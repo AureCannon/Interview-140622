@@ -17,14 +17,18 @@ namespace Infrastructure.Caching
                 {
                     if (!_cache.TryGetValue(key, out cacheEntry))
                     {
-                        cacheEntry = await getFromDb();
-                        var cacheEntryOptions = new MemoryCacheEntryOptions()
-                        .SetSize(1)
-                        .SetPriority(CacheItemPriority.High)
-                        .SetSlidingExpiration(TimeSpan.FromSeconds(60))
-                        .SetAbsoluteExpiration(TimeSpan.FromHours(1));
+                        var data = await getFromDb();
+                        if (data != null)
+                        {
+                            cacheEntry = data;
+                            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                            .SetSize(1)
+                            .SetPriority(CacheItemPriority.High)
+                            .SetSlidingExpiration(TimeSpan.FromSeconds(60))
+                            .SetAbsoluteExpiration(TimeSpan.FromHours(1));
 
-                        _cache.Set(key, cacheEntry, cacheEntryOptions);
+                            _cache.Set(key, cacheEntry, cacheEntryOptions);
+                        }
                     }
                 }
                 finally

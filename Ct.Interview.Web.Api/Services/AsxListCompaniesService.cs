@@ -36,8 +36,9 @@ namespace Ct.Interview.Web.Api.Services
 
         public async Task<AsxListedCompany[]> GetByAsxCodeFromCacheOrDb(string asxCode)
         {
-            var result = await _cache.GetOrCreateAsync(asxCode,
-                async () => await _repository.FindEntitiesByConditionAsync(e => e.AsxCode.ToLower() == asxCode.ToLower()));
+            var code = asxCode.ToLower();
+            var result = await _cache.GetOrCreateAsync(code,
+                async () => await _repository.FindEntitiesByConditionAsync(e => e.AsxCode.ToLower() == code));
 
             return result.ToArray();
         }

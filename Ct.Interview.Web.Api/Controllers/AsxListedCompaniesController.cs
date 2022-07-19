@@ -24,7 +24,7 @@ namespace Ct.Interview.Web.Api.Controllers
         public async Task<ActionResult<AsxListedCompanyResponse[]>> Get(string asxCode)
         {
             var asxListedCompanies = await _asxListedCompaniesService.GetByAsxCode(asxCode);
-            if (asxListedCompanies == null) return NotFound();
+            if (asxListedCompanies == null || asxListedCompanies.Length == 0) return NotFound();
             var mappedCompanies = _mapper.Map<IEnumerable<AsxListedCompanyResponse>>(asxListedCompanies);
 
             return Ok(mappedCompanies);
